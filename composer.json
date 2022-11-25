@@ -32,6 +32,12 @@
       "Papryk\\Imager\\Tests\\": "tests/"
     }
   },
+  "scripts": {
+    "post-install-cmd": [
+      "chmod 777 $PWD/public",
+      "chmod 777 $PWD/storage/logs"
+    ]
+  },
   "authors": [
     {
       "name": "Patryk Gorol",

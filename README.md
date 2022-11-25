@@ -1,6 +1,7 @@
 **How to install**
 
-- git clone 
+- git clone https://github.com/paprykasz/imager
+- change directory to ``imager``
 - docker-compose up -d
 - docker exec -it phpfpm composer install
 - open https://localhost in browser
