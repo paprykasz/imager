@@ -5,7 +5,7 @@
 **How to install**
 
 1. Clone repository:
-   - `git clone https://github.com/paprykasz/imager
+   - `git clone https://github.com/paprykasz/imager`
 2. Change directory to cloned repository `imager`
 3. Run docker services 
    - `docker-compose up -d`
