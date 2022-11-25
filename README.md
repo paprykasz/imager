@@ -1,3 +1,7 @@
+**Requirements**
+- docker (https://docs.docker.com/engine/install/)
+- docker-compose (https://docs.docker.com/compose/install/linux/)
+
 **How to install**
 
 1. Clone repository:

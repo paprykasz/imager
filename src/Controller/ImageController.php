@@ -14,8 +14,8 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Generator\UrlGenerator;
 use SplFileInfo;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Class ImageController
@@ -30,7 +30,6 @@ class ImageController extends AbstractController
      */
     public function index(): Response
     {
-        /** @var UrlGenerator $generator */
         $generator = $this->getUrlGenerator();
 
         $images = [
@@ -176,12 +175,12 @@ class ImageController extends AbstractController
     }
 
     /**
-     * @return UrlGenerator
+     * @return UrlGeneratorInterface
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    protected function getUrlGenerator(): UrlGenerator
+    protected function getUrlGenerator(): UrlGeneratorInterface
     {
-        return $this->container->get(UrlGenerator::class);
+        return $this->container->get(UrlGeneratorInterface::class);
     }
 }

@@ -11,6 +11,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGenerator;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Route;
@@ -46,7 +47,7 @@ $containerBuilder->addDefinitions(...[
         }
     ],
     [
-        UrlGenerator::class => function (ContainerInterface $container) {
+        UrlGeneratorInterface::class => function (ContainerInterface $container) {
             return new UrlGenerator($container->get(RouteCollection::class), $container->get(RequestContext::class));
         }
     ],

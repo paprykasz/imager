@@ -8,7 +8,6 @@ use Jtl\UnitTest\TestCase;
 use Papryk\Imager\Controller\ImageController;
 use Papryk\Imager\Image\ImageHandler;
 use Papryk\Imager\Image\ImageHandlerInterface;
-use Papryk\Imager\Storage\ImagePublicStorage;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -160,7 +159,7 @@ class ImageControllerTest extends TestCase
         $this->manipulatorActionTest('resize');
     }
 
-    protected function manipulatorActionTest($method): void
+    protected function manipulatorActionTest($manipulation): void
     {
         $imageController = $this->getImageControllerMock(['getRequest', 'getImageHandler', 'getImagePublicStorage', 'createRedirectResponse']);
 
@@ -177,12 +176,12 @@ class ImageControllerTest extends TestCase
             ->willReturn($request);
 
         $imageHandler = $this->getMockBuilder(ImageHandler::class)
-            ->onlyMethods(['getFilename', 'getExtension', $method, 'save'])
+            ->onlyMethods(['getFilename', 'getExtension', $manipulation, 'save'])
             ->disableOriginalConstructor()
             ->getMock();
 
         $imageHandler->expects($this->once())
-            ->method($method);
+            ->method($manipulation);
 
         $imageHandler->expects($this->once())
             ->method('save');
@@ -197,7 +196,7 @@ class ImageControllerTest extends TestCase
         $imageController->expects($this->once())
             ->method('getImagePublicStorage');
 
-        $response = $imageController->$method();
+        $response = $imageController->$manipulation();
         $this->assertInstanceOf(Response::class, $response);
     }
 
