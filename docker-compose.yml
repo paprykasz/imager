@@ -1,0 +1,29 @@
+version: '2'
+
+services:
+  phpfpm:
+    image: docker.io/bitnami/php-fpm:8.1
+    container_name: phpfpm
+    ports:
+      - 9000:9000
+    volumes:
+      - .:/app
+      - .config/docker/php/php.ini:/opt/bitnami/php/etc/conf.d/php.ini
+    networks:
+      - image-service
+  apache:
+    image: docker.io/bitnami/apache:2.4
+    ports:
+      - '443:8443'
+    networks:
+      - image-service
+    depends_on:
+      - phpfpm
+    volumes:
+      - .config/docker/apache2/vhost.conf:/vhosts/my_vhost.conf:ro
+      - .:/app
+
+networks:
+  image-service:
+    driver: bridge
+

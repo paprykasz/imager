@@ -1,0 +1,7 @@
+.phpunit.cache
+.idea
+storage/logs/*
+!storage/logs/.gitkeep
+vendor
+public/*
+!public/index.php
