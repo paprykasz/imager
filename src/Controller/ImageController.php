@@ -12,6 +12,7 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 
@@ -56,21 +57,7 @@ class ImageController extends AbstractController
      */
     public function crop(): Response
     {
-        $request = $this->getRequest();
-        $imageNameWithExt = $request->get('imageName');
-        $height = $request->get('height');
-        $width = $request->get('width');
-
-        $imageHandler = $this->getImageHandler($imageNameWithExt);
-
-        $newImageFilename = sprintf('%s-c%sx%s.%s', $imageHandler->getFilename(), $width, $height, $imageHandler->getExtension());
-
-        if (!file_exists($newImageFilename)) {
-            $imageHandler->crop($width, $height);
-            $imageHandler->save($this->getImagePublicStorage(), $newImageFilename);
-        }
-
-        return $this->createRedirectResponse($newImageFilename);
+        return $this->manipulate('crop', $this->getRequest());
     }
 
     /**
@@ -80,17 +67,30 @@ class ImageController extends AbstractController
      */
     public function resize(): Response
     {
-        $request = $this->getRequest();
+        return $this->manipulate('resize', $this->getRequest());
+    }
+
+    /**
+     * @param string $action
+     * @param Request $request
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function manipulate(string $action, Request $request): Response
+    {
         $imageNameWithExt = $request->get('imageName');
         $height = $request->get('height');
         $width = $request->get('width');
 
         $imageHandler = $this->getImageHandler($imageNameWithExt);
 
-        $newImageFilename = sprintf('%s-r%sx%s.%s', $imageHandler->getFilename(), $width, $height, $imageHandler->getExtension());
+        $actionShort = substr($action, 0, 1);
+
+        $newImageFilename = sprintf('%s-%s%sx%s.%s', $imageHandler->getFilename(), $actionShort, $width, $height, $imageHandler->getExtension());
 
         if (!file_exists($newImageFilename)) {
-            $imageHandler->resize($width, $height);
+            $imageHandler->$action($width, $height);
             $imageHandler->save($this->getImagePublicStorage(), $newImageFilename);
         }
 
