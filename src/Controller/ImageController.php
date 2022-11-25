@@ -89,7 +89,7 @@ class ImageController extends AbstractController
 
         $newImageFilename = sprintf('%s-%s%sx%s.%s', $imageHandler->getFilename(), $actionShort, $width, $height, $imageHandler->getExtension());
 
-        if (!file_exists($newImageFilename)) {
+        if ($this->isCached($newImageFilename) === false) {
             $imageHandler->$action($width, $height);
             $imageHandler->save($this->getImagePublicStorage(), $newImageFilename);
         }
@@ -109,6 +109,17 @@ class ImageController extends AbstractController
         $image = new SplFileInfo($this->getImageSourcePath($this->getStorage(), $imageName));
 
         return new BinaryFileResponse($image);
+    }
+
+    /**
+     * @param string $imageFilename
+     * @return bool
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function isCached(string $imageFilename): bool
+    {
+        return file_exists(sprintf($this->getImagePublicStorage()->getStoragePath() . '/' . $imageFilename));
     }
 
     /**

@@ -159,9 +159,46 @@ class ImageControllerTest extends TestCase
         $this->manipulatorActionTest('resize');
     }
 
+    /**
+     * @covers ImageController::manipulate
+     */
+    public function testManipulatedImageExists(): void
+    {
+        $imageController = $this->getImageControllerMock(['getImageHandler', 'getImagePublicStorage', 'createRedirectResponse', 'isCached']);
+
+        $request = $this->getMockBuilder(Request::class)
+            ->onlyMethods(['get'])
+            ->getMock();
+
+        $request->expects($this->exactly(3))
+            ->method('get')
+            ->willReturnOnConsecutiveCalls(...['foo.jpg', 100, 200]);
+
+        $imageHandler = $this->getMockBuilder(ImageHandler::class)
+            ->onlyMethods(['getFilename', 'getExtension', 'crop', 'save'])
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $imageHandler->expects($this->never())
+            ->method('crop');
+
+        $imageHandler->expects($this->never())
+            ->method('save');
+
+        $imageController->expects($this->once())
+            ->method('getImageHandler')
+            ->willReturn($imageHandler);
+
+        $imageController->expects($this->once())
+            ->method('isCached')
+            ->willReturn(true);
+
+        $this->invokeMethod($imageController, 'manipulate', 'crop', $request);
+    }
+
     protected function manipulatorActionTest($manipulation): void
     {
-        $imageController = $this->getImageControllerMock(['getRequest', 'getImageHandler', 'getImagePublicStorage', 'createRedirectResponse']);
+        $imageController = $this->getImageControllerMock(['getRequest', 'getImageHandler', 'getImagePublicStorage', 'createRedirectResponse', 'isCached']);
 
         $request = $this->getMockBuilder(Request::class)
             ->onlyMethods(['get'])
@@ -195,6 +232,10 @@ class ImageControllerTest extends TestCase
 
         $imageController->expects($this->once())
             ->method('getImagePublicStorage');
+
+        $imageController->expects($this->once())
+            ->method('isCached')
+            ->willReturn(false);
 
         $response = $imageController->$manipulation();
         $this->assertInstanceOf(Response::class, $response);
