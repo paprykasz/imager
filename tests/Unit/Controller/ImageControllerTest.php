@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGenerator;
+use SplFileInfo;
 
 class ImageControllerTest extends TestCase
 {
@@ -60,7 +61,7 @@ class ImageControllerTest extends TestCase
             ->method('getRequest')
             ->willReturn($request);
 
-        $this->getMockBuilder(\SplFileInfo::class)
+        $this->getMockBuilder(SplFileInfo::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -96,7 +97,7 @@ class ImageControllerTest extends TestCase
             ->method('getImageSourcePath')
             ->willReturn(dirname(dirname(__DIR__)) . '/Fixtures/file.txt');
 
-        $this->getMockBuilder(\SplFileInfo::class)
+        $this->getMockBuilder(SplFileInfo::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -159,7 +160,7 @@ class ImageControllerTest extends TestCase
         $this->manipulatorActionTest('resize');
     }
 
-    protected function manipulatorActionTest($method)
+    protected function manipulatorActionTest($method): void
     {
         $imageController = $this->getImageControllerMock(['getRequest', 'getImageHandler', 'getImagePublicStorage', 'createRedirectResponse']);
 

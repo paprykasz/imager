@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGenerator;
+use SplFileInfo;
 
 /**
  * Class ImageController
@@ -106,7 +107,7 @@ class ImageController extends AbstractController
     {
         $imageName = $this->getRequest()->get('imageName');
 
-        $image = new \SplFileInfo($this->getImageSourcePath($this->getStorage(), $imageName));
+        $image = new SplFileInfo($this->getImageSourcePath($this->getStorage(), $imageName));
 
         return new BinaryFileResponse($image);
     }

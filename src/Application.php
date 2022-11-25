@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
+use Exception;
 
 /**
  * Class Application
@@ -76,7 +77,7 @@ class Application implements LoggerAwareInterface
             }
         } catch (RouteNotFoundException $routeNotFoundException) {
             $response = new Response($routeNotFoundException->getMessage(), 404);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->logger->critical($exception);
             $response = new Response('Something went wrong :(', 500);
         }

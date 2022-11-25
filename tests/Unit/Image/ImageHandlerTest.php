@@ -32,7 +32,7 @@ class ImageHandlerTest extends TestCase
     /**
      * @covers ImageHandler::crop
      */
-    public function testCrop()
+    public function testCrop(): void
     {
         $image = $this->createImageMock();
         $image->expects($this->once())
@@ -46,7 +46,7 @@ class ImageHandlerTest extends TestCase
     /**
      * @covers ImageHandler::crop
      */
-    public function testResize()
+    public function testResize(): void
     {
         $image = $this->createImageMock();
         $image->expects($this->once())
@@ -60,7 +60,7 @@ class ImageHandlerTest extends TestCase
     /**
      * @covers ImageHandler::getFilename
      */
-    public function testGetFilename()
+    public function testGetFilename(): void
     {
         $image = $this->createImageMock();
         $this->setProperty($image, 'filename', 'foo');
@@ -73,7 +73,7 @@ class ImageHandlerTest extends TestCase
     /**
      * @covers ImageHandler::getExtension
      */
-    public function testGetExtension()
+    public function testGetExtension(): void
     {
         $image = $this->createImageMock();
         $this->setProperty($image, 'extension', 'jpg');
@@ -86,7 +86,7 @@ class ImageHandlerTest extends TestCase
     /**
      * @covers ImageHandler::save
      */
-    public function testSave()
+    public function testSave(): void
     {
         $image = $this->createImageMock();
         $image->expects($this->once())
