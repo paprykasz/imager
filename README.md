@@ -1,14 +1,14 @@
 **How to install**
 
 - git clone https://github.com/paprykasz/imager
-- change directory to ``imager``
-- docker-compose up -d
-- docker exec -it phpfpm composer install
-- open https://localhost in browser
+- change directory to `imager`
+- run docker services `docker-compose up -d`
+- run `docker exec -it phpfpm composer install` to install php dependencies
+- open `https://localhost` in browser
 
 **How to use**
 
-- Original image storage folder is located at ``storage/img/`` you need to save original image there.
+- Original image storage folder is located at `storage/img/` you need to save original image there.
 - After that there are two modifiers available:
   - crop - you need to visit https://localhost/{originalImageNameWithExtension}/crop/{height}x{width}
   - resize - you need to visit https://localhost/{originalImageNameWithExtension}/resize/{height}x{width}
