@@ -1,18 +1,22 @@
-version: '2'
+version: '3'
 
 services:
   phpfpm:
     image: docker.io/bitnami/php-fpm:8.1
     container_name: phpfpm
+    depends_on:
+      - chrome
     ports:
       - 9000:9000
     volumes:
       - .:/app
       - .config/docker/php/php.ini:/opt/bitnami/php/etc/conf.d/php.ini
+      - .config/docker/apache2/certs:/certs
     networks:
       - image-service
   apache:
     image: docker.io/bitnami/apache:2.4
+    container_name: apache-web
     ports:
       - '443:8443'
     networks:
@@ -21,9 +25,31 @@ services:
       - phpfpm
     volumes:
       - .config/docker/apache2/vhost.conf:/vhosts/my_vhost.conf:ro
+      - .config/docker/apache2/certs:/certs
       - .:/app
-
+  chrome:
+    image: selenium/node-chrome:4.6.0-20221104
+    shm_size: 2gb
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+    networks:
+      - image-service
+  selenium-hub:
+    image: selenium/hub:4.6.0-20221104
+    container_name: selenium-hub
+    ports:
+      - "4442:4442"
+      - "4443:4443"
+      - "4444:4444"
+    networks:
+      - image-service
 networks:
   image-service:
     driver: bridge
+volumes:
+  cert-volume:
 

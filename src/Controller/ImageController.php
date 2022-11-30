@@ -23,6 +23,12 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class ImageController extends AbstractController
 {
+    public const
+        ORIGINAL_LANDSCAPE_IMAGE_ID = 'original-landscape',
+        CROP_LANDSCAPE_IMAGE_ID = 'crop-landscape',
+        ORIGINAL_PLANE_IMAGE_ID = 'original-image',
+        RESIZE_PLANE_IMAGE_ID = 'resize-image';
+
     /**
      * @return Response
      * @throws ContainerExceptionInterface
@@ -33,18 +39,18 @@ class ImageController extends AbstractController
         $generator = $this->getUrlGenerator();
 
         $images = [
-            $generator->generate('original', ['imageName' => 'johann-siemens-EPy0gBJzzZU-unsplash.jpg']),
-            $generator->generate('crop', ['imageName' => 'johann-siemens-EPy0gBJzzZU-unsplash.jpg', 'width' => 1000, 'height' => 1000]),
-            $generator->generate('original', ['imageName' => 'john-mcarthur-8KLLgqHMAv4-unsplash.jpg']),
-            $generator->generate('resize', ['imageName' => 'john-mcarthur-8KLLgqHMAv4-unsplash.jpg', 'width' => 1000, 'height' => 1000]),
+            self::ORIGINAL_LANDSCAPE_IMAGE_ID => $generator->generate('original', ['imageName' => 'johann-siemens-EPy0gBJzzZU-unsplash.jpg']),
+            self::CROP_LANDSCAPE_IMAGE_ID => $generator->generate('crop', ['imageName' => 'johann-siemens-EPy0gBJzzZU-unsplash.jpg', 'width' => 1000, 'height' => 1000]),
+            self::ORIGINAL_PLANE_IMAGE_ID => $generator->generate('original', ['imageName' => 'john-mcarthur-8KLLgqHMAv4-unsplash.jpg']),
+            self::RESIZE_PLANE_IMAGE_ID => $generator->generate('resize', ['imageName' => 'john-mcarthur-8KLLgqHMAv4-unsplash.jpg', 'width' => 1000, 'height' => 1000]),
         ];
 
         /**
          * I could use Twig or Blade but it's only for presentation purpose
          */
         $imageTemplate = [];
-        foreach ($images as $image) {
-            $imageTemplate[] = sprintf("<img style='height: 40%%' src='%s' />", $image);
+        foreach ($images as $id => $image) {
+            $imageTemplate[] = sprintf("<img id='%s' style='height: 40%%' src='%s' />", $id, $image);
         }
 
         return new Response(sprintf('<html><body>%s</body></html>', join('', $imageTemplate)));

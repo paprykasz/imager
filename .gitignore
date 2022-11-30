@@ -5,3 +5,5 @@ storage/logs/*
 vendor
 public/*
 !public/index.php
+.config/docker/apache2/certs/*
+!.config/docker/apache2/certs/generate

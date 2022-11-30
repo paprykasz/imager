@@ -1,0 +1,7 @@
+#!/bin/bash
+scriptDir="$( dirname -- "$BASH_SOURCE"; )";
+
+openssl genrsa -out $scriptDir/server.key 2048
+openssl req -new -key $scriptDir/server.key -subj "/C=PL/ST=/L=/O=/OU=/CN=apache-web" -out $scriptDir/cert.csr
+openssl x509 -in $scriptDir/cert.csr -out $scriptDir/server.crt -req -signkey $scriptDir/server.key -days 365
+chmod 664 $scriptDir/server.key $scriptDir/server.crt
