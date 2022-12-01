@@ -96,24 +96,6 @@ class ImageControllerTest extends TestCase
     }
 
     /**
-     * @covers \Papryk\Imager\Controller\ImageController::crop
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    public function testResizeFunction(): void
-    {
-        $width = random_int(100, 1500);
-        $height = random_int(100, 1500);
-
-        $url = $this->container->get(UrlGeneratorInterface::class)->generate('resize', ['imageName' => 'johann-siemens-EPy0gBJzzZU-unsplash.jpg', 'width' => $width, 'height' => $height]);
-        $resizedImageSize = getimagesize(sprintf('%s%s', $this->getAppUrl(), $url));
-
-        $this->assertEquals($width, $resizedImageSize[0]);
-        $this->assertEquals($height, $resizedImageSize[1]);
-        $this->assertFileExists(sprintf('%s/johann-siemens-EPy0gBJzzZU-unsplash-r%sx%s.jpg', $this->container->get(ImagePublicStorage::class)->getStoragePath(), $width, $height));
-    }
-
-    /**
      * @return string
      */
     protected function getAppUrl(): string
