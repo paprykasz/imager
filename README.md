@@ -7,11 +7,13 @@
 1. Clone repository:
    - `git clone https://github.com/paprykasz/imager`
 2. Change directory to cloned repository `imager`
-3. Run docker services 
+3. Generate certificate by running:
+   - `.config/docker/apache2/certs/generate`
+4. Run docker services 
    - `docker-compose up -d`
-3. Install php dependencies
+5. Install php dependencies
    - `docker exec -it phpfpm composer install`
-4. Open url in browser to see example images `https://localhost`
+6. Open url in browser to see example images `https://localhost`
 
 **How to use**
 
